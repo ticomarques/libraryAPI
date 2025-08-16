@@ -1,3 +1,32 @@
 Comando para checar porta
 
 netstat -aof | findstr 5432
+
+
+//SQL
+CREATE TABLE IF NOT EXISTS autor(
+	id UUID not null primary key,
+	nome varchar(100) not null,
+	data_nascimento date not null,
+	nacionalidade varchar(50) not null
+);
+
+SELECT * FROM autor;
+
+CREATE TABLE IF NOT EXISTS livro (
+	id UUID not null primary key,
+	isbn varchar(20) not null,
+	titulo varchar(250) not null,
+	data_publicacao date not null,
+	genero varchar(30) not null,
+	preco numeric(18, 2),
+	id_autor UUID not null references autor(id),
+	constraint chk_genero check (genero in ('FICCAO', 'FANTASIA', 'MISTERIO', 'ROMANCE', 'BIOGARFIA', 'CIENCIA'))
+);
+
+SELECT * FROM livro;
+
+SELECT 1;
+
+DROP TABLE livro;
+DROP TABLE autor;
