@@ -1,0 +1,3 @@
+Comando para checar porta
+
+netstat -aof | findstr 5432
