@@ -80,4 +80,23 @@ class LivroRepositoryTest {
         repository.save(livro);
     }
 
+    @Test
+    void atualizarDoAutorTest(){
+        UUID id = UUID.fromString("e9af2bd9-c31c-4606-9762-5bf592e6b3c3");
+        var livroParaAtualizar = repository.findById(id).orElse(null);
+
+        UUID id_autor = UUID.fromString("86c29685-b72a-4e49-8bb6-628a123886bf");
+        Autor autor = autorRepository.findById(id_autor).orElse(null);
+
+        livroParaAtualizar.setAutor(autor);
+        repository.save(livroParaAtualizar);
+    }
+
+    @Test
+    void deletar(){
+        UUID id = UUID.fromString("e9af2bd9-c31c-4606-9762-5bf592e6b3c3");
+        repository.deleteById(id);
+        System.out.println("Livro deletado com sucesso!");
+    }
+
 }
