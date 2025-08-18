@@ -4,8 +4,10 @@ import io.github.cursodsousa.libraryapi.model.Autor;
 import io.github.cursodsousa.libraryapi.model.GeneroLivro;
 import io.github.cursodsousa.libraryapi.model.Livro;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -73,5 +75,15 @@ public interface LivroRepository extends JpaRepository<Livro, UUID> {
             @Param("genero") GeneroLivro generoLivro,
             @Param("paramOrdenacao") String nomePropriedade
     );
+
+    @Modifying
+    @Transactional //update e delete são transacoes (precisam ser comitadas no final)
+    @Query(" DELETE FROM Livro WHERE genero = ?1 ")
+    void deleteByGenero(GeneroLivro genero);
+
+    @Modifying
+    @Transactional //update e delete são transacoes (precisam ser comitadas no final)
+    @Query(" UPDATE Livro SET dataPublicacao = ?1 ")
+    void updateDataPublicacao(LocalDate novaData);
 
 }
