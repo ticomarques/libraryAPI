@@ -10,6 +10,7 @@ import java.util.UUID;
 @Entity
 @Table(name="livro")
 @Data
+@ToString(exclude="autor")
 public class Livro {
 
     @Id
@@ -24,7 +25,7 @@ public class Livro {
     private String titulo;
 
     @Column(name="data_publicacao")
-    private LocalDate data_publicacao;
+    private LocalDate dataPublicacao;
 
     @Enumerated(EnumType.STRING)
     @Column(name="genero", length=30, nullable = false)
@@ -33,7 +34,10 @@ public class Livro {
     @Column(name="preco", precision=18, scale=2)
     private BigDecimal preco;
 
-    @ManyToOne//(cascade = CascadeType.ALL)
+    @ManyToOne(
+            //cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY //só traz os dados do livro, não do autor
+    )
     @JoinColumn(name="id_autor")
     private Autor autor;
 

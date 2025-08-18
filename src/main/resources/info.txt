@@ -30,3 +30,28 @@ SELECT 1;
 
 DROP TABLE livro;
 DROP TABLE autor;
+
+
+
+
+
+
+
+
+select l.id, l.titulo as nome_livro, l.data_publicacao as data_publicacao,
+a.nome as nome_autor, a.id as id_autor
+from livro as l
+join autor as a on a.id = l.id_autor;
+
+
+select * from autor;
+
+select * from livro;
+
+select * from livro where titulo like '%UFO%'
+
+select l.* from livro as l order by l.titulo, l.preco asc
+
+delete from livro where id in ('c613c504-ce7c-4a98-909f-1a956d3374fb' , '0e6375ae-ae0b-410b-98b9-ee1287b74eb3')
+
+select * from livro where id = ""

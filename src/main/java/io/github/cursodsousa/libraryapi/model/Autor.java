@@ -13,7 +13,7 @@ import java.util.UUID;
 @Table(name="autor")
 @Getter
 @Setter
-@ToString
+@ToString(exclude="livros")
 public class Autor {
 
     @Id
@@ -30,8 +30,7 @@ public class Autor {
     @Column(name="nacionaldade", length = 50, nullable = false)
     private String nacionalidade;
 
-    //@OneToMany(mappedBy = "autor")
-    @Transient
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Livro> livros;
 
 }
