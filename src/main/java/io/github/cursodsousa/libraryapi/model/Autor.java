@@ -24,7 +24,7 @@ public class Autor {
     @Column(name="nome", length = 100, nullable = false)
     private String nome;
 
-    @Column(name="data_nascimento", nullable = false)
+    @Column(name="dataNascimento", nullable = false)
     private LocalDate dataNascimento;
 
     @Column(name="nacionaldade", length = 50, nullable = false)
