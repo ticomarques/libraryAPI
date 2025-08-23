@@ -31,10 +31,10 @@ class LivroRepositoryTest {
         livro.setIsbn("11111-11111");
         livro.setPreco(BigDecimal.valueOf(140));
         livro.setGenero(GeneroLivro.CIENCIA);
-        livro.setTitulo("Estrela flamejante");
+        livro.setTitulo("Planeta bola");
         livro.setDataPublicacao(LocalDate.of(1998,2,1));
 
-        Autor autor = autorRepository.findById(UUID.fromString("951d846e-d915-4716-9c4f-56179dea0480")).orElse(null);
+        Autor autor = autorRepository.findById(UUID.fromString("7c8868c7-c6c2-4c83-a84f-95d3622a70cc")).orElse(null);
         livro.setAutor(autor);
 
         repository.save(livro);
