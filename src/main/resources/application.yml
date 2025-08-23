@@ -10,6 +10,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update #data definition language
+      #ddl-auto: update #data definition language
+      ddl-auto: none #data definition language
     properties:
       hibernate.format_sql: true
