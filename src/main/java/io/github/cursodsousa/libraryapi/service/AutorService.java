@@ -5,6 +5,7 @@ import io.github.cursodsousa.libraryapi.model.Autor;
 import io.github.cursodsousa.libraryapi.repository.AutorRepository;
 import io.github.cursodsousa.libraryapi.repository.LivroRepository;
 import io.github.cursodsousa.libraryapi.validator.AutorValidator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -12,21 +13,13 @@ import java.util.UUID;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AutorService {
 
+    //usando @RequiredArgsConstructor e final, ele cria em tempo de execucao o construtor e atribui a variavel a classe.
     private final AutorRepository repository;
     private final AutorValidator validator;
     private final LivroRepository livroRepository;
-
-    public AutorService(
-            AutorRepository repository,
-            AutorValidator validator,
-            LivroRepository livroRepository
-    ){
-        this.repository = repository;
-        this.validator = validator;
-        this.livroRepository = livroRepository;
-    }
 
     //service para salvar autor
     public Autor salvar(Autor autor){
