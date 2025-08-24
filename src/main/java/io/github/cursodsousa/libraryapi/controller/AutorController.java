@@ -24,6 +24,7 @@ public class AutorController {
 
     private final AutorService service;
 
+    //POST autor
     @PostMapping
     public ResponseEntity<Object> salvar(@RequestBody AutorDTO autor){
         try{
@@ -43,6 +44,7 @@ public class AutorController {
         }
     }
 
+    //GET autor (detalhes)
     @GetMapping("{id}")
     public ResponseEntity<AutorDTO> obterDetalhes(@PathVariable("id") String id){
         var idAutor = UUID.fromString(id);
@@ -61,6 +63,7 @@ public class AutorController {
         return ResponseEntity.notFound().build();
     }
 
+    //DELETE autor
     @DeleteMapping("{id}")
     public ResponseEntity<Object> deletar(@PathVariable("id") String id){
         try {
@@ -79,6 +82,7 @@ public class AutorController {
         }
     }
 
+    //GET autor (nome, nacionalidade, todos)
     @GetMapping
     public ResponseEntity<List<AutorDTO>> pesquisar(
             @RequestParam(value="nome", required=false) String nome,
@@ -95,9 +99,9 @@ public class AutorController {
         return ResponseEntity.ok(lista);
     }
 
+    //PUT autor
     @PutMapping("{id}")
     public ResponseEntity<Object> atualizar(@PathVariable("id") String id, @RequestBody AutorDTO dto){
-
         try {
             var idAutor = UUID.fromString(id);
             Optional<Autor> autorOptional = service.obterPorId(idAutor);
@@ -112,7 +116,6 @@ public class AutorController {
             autor.setDataNascimento(dto.dataNascimento());
 
             service.atualizar(autor);
-
             return ResponseEntity.noContent().build();
         } catch (RegistroDuplicadoExceptions e){
             var erroDTO = ErroResposta.conflito(e.getMessage());
