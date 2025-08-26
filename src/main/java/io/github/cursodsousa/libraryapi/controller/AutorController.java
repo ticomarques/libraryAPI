@@ -6,7 +6,9 @@ import io.github.cursodsousa.libraryapi.exceptions.OperacaoNaoPermitidaException
 import io.github.cursodsousa.libraryapi.exceptions.RegistroDuplicadoExceptions;
 import io.github.cursodsousa.libraryapi.model.Autor;
 import io.github.cursodsousa.libraryapi.service.AutorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -26,7 +28,8 @@ public class AutorController {
 
     //POST autor
     @PostMapping
-    public ResponseEntity<Object> salvar(@RequestBody AutorDTO autor){
+    //@ResponseStatus(HttpStatus.OK) - Se voce quiser que sempre retorne ok na chamda deste endpoint
+    public ResponseEntity<Object> salvar(@RequestBody @Valid AutorDTO autor){
         try{
             Autor autorEntidade = autor.mapearParaAutor();
             service.salvar(autorEntidade);
@@ -101,7 +104,7 @@ public class AutorController {
 
     //PUT autor
     @PutMapping("{id}")
-    public ResponseEntity<Object> atualizar(@PathVariable("id") String id, @RequestBody AutorDTO dto){
+    public ResponseEntity<Object> atualizar(@PathVariable("id") String id, @RequestBody @Valid AutorDTO dto){
         try {
             var idAutor = UUID.fromString(id);
             Optional<Autor> autorOptional = service.obterPorId(idAutor);
