@@ -2,6 +2,7 @@ package io.github.cursodsousa.libraryapi.controller.common;
 
 import io.github.cursodsousa.libraryapi.controller.dto.ErroCampo;
 import io.github.cursodsousa.libraryapi.controller.dto.ErroResposta;
+import io.github.cursodsousa.libraryapi.exceptions.CampoInvalidoException;
 import io.github.cursodsousa.libraryapi.exceptions.OperacaoNaoPermitidaException;
 import io.github.cursodsousa.libraryapi.exceptions.RegistroDuplicadoExceptions;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,16 @@ public class GlobalExceptionHandler {
         return ErroResposta.respostaPadrao(e.getMessage());
     }
 
+    //Exception mais especifica para tratar livros apos data publicacao apos 2020, preco obrigatorio
+    @ExceptionHandler(CampoInvalidoException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ErroResposta handleCampoInvalidoException(CampoInvalidoException e){
+        return new ErroResposta(HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                "Erro de validação.",
+                List.of(new ErroCampo(e.getCampo(), e.getMessage())));
+    }
+
+    //Exception mais generica
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErroResposta handleErrosNaoTratados(RuntimeException e){
