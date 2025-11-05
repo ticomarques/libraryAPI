@@ -27,9 +27,7 @@ public class AutorController implements GenericController {
     //POST autor
     @PostMapping
     @PreAuthorize("hasRole('GERENTE')")
-    //@ResponseStatus(HttpStatus.OK) - Se voce quiser que sempre retorne ok na chamda deste endpoint
     public ResponseEntity<Void> salvar(@RequestBody @Valid AutorDTO dto) {
-        //Autor autor = autor.mapearParaAutor(); -- forma sem usar o mapStruct
         Autor autor = mapper.toEntity(dto);
         service.salvar(autor);
         URI location = gerarHeaderLocation(autor.getId());
@@ -38,16 +36,15 @@ public class AutorController implements GenericController {
 
     //GET autor (detalhes)
     @GetMapping("{id}")
+    @PreAuthorize("hasAnyRole('OPERADOR', 'GERENTE')")
     public ResponseEntity<AutorDTO> obterDetalhes(@PathVariable("id") String id) {
         var idAutor = UUID.fromString(id);
-        Optional<Autor> autorOptional = service.obterPorId(idAutor);
 
         return service
                 .obterPorId(idAutor)
                 .map(autor -> {
                     AutorDTO dto = mapper.toDTO(autor);
                     return ResponseEntity.ok(dto);
-
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -71,20 +68,22 @@ public class AutorController implements GenericController {
     @PreAuthorize("hasAnyRole('OPERADOR', 'GERENTE')")
     public ResponseEntity<List<AutorDTO>> pesquisar(
             @RequestParam(value = "nome", required = false) String nome,
-            @RequestParam(value = "nacionalidade", required = false) String nacionalidade
-    ) {
+            @RequestParam(value = "nacionalidade", required = false) String nacionalidade) {
         List<Autor> resultado = service.pesquisaByExample(nome, nacionalidade);
         List<AutorDTO> lista = resultado
                 .stream()
                 .map(mapper::toDTO)
                 .collect(Collectors.toList());
+
         return ResponseEntity.ok(lista);
     }
 
     //PUT autor
     @PutMapping("{id}")
     @PreAuthorize("hasRole('GERENTE')")
-    public ResponseEntity<Void> atualizar(@PathVariable("id") String id, @RequestBody @Valid AutorDTO dto) {
+    public ResponseEntity<Void> atualizar(
+            @PathVariable("id") String id, @RequestBody @Valid AutorDTO dto) {
+
         var idAutor = UUID.fromString(id);
         Optional<Autor> autorOptional = service.obterPorId(idAutor);
 
@@ -98,6 +97,8 @@ public class AutorController implements GenericController {
         autor.setDataNascimento(dto.dataNascimento());
 
         service.atualizar(autor);
+
         return ResponseEntity.noContent().build();
+
     }
 }

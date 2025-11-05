@@ -1,6 +1,6 @@
 package io.github.cursodsousa.libraryapi.validator;
 
-import io.github.cursodsousa.libraryapi.exceptions.RegistroDuplicadoExceptions;
+import io.github.cursodsousa.libraryapi.exceptions.RegistroDuplicadoException;
 import io.github.cursodsousa.libraryapi.model.Autor;
 import io.github.cursodsousa.libraryapi.repository.AutorRepository;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,7 @@ public class AutorValidator {
 
     public void validar(Autor autor){
         if(existeAutorCadastrado(autor)){
-            throw new RegistroDuplicadoExceptions("Autor já cadastrado!");
+            throw new RegistroDuplicadoException("Autor já cadastrado!");
         }
     }
 
@@ -28,7 +28,7 @@ public class AutorValidator {
         );
 
         if(autor.getId() == null){
-            return autorEncontrado.isPresent();
+            return autorEncontrado.isPresent() ;
         }
 
         return !autor.getId().equals(autorEncontrado.get().getId()) && autorEncontrado.isPresent();

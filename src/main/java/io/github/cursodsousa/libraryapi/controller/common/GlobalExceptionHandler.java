@@ -4,9 +4,8 @@ import io.github.cursodsousa.libraryapi.controller.dto.ErroCampo;
 import io.github.cursodsousa.libraryapi.controller.dto.ErroResposta;
 import io.github.cursodsousa.libraryapi.exceptions.CampoInvalidoException;
 import io.github.cursodsousa.libraryapi.exceptions.OperacaoNaoPermitidaException;
-import io.github.cursodsousa.libraryapi.exceptions.RegistroDuplicadoExceptions;
+import io.github.cursodsousa.libraryapi.exceptions.RegistroDuplicadoException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -33,9 +32,9 @@ public class GlobalExceptionHandler {
         return new ErroResposta(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Erro de validação", listaErros);
     }
 
-    @ExceptionHandler(RegistroDuplicadoExceptions.class)
+    @ExceptionHandler(RegistroDuplicadoException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErroResposta handleRegistroDuplicadoException(RegistroDuplicadoExceptions e){
+    public ErroResposta handleRegistroDuplicadoException(RegistroDuplicadoException e){
         return ErroResposta.conflito(e.getMessage());
     }
 

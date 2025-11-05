@@ -1,10 +1,8 @@
 package io.github.cursodsousa.libraryapi.controller;
 
 import io.github.cursodsousa.libraryapi.controller.dto.CadastroLivroDTO;
-import io.github.cursodsousa.libraryapi.controller.dto.ErroResposta;
 import io.github.cursodsousa.libraryapi.controller.dto.ResultadoPesquisaLivroDTO;
 import io.github.cursodsousa.libraryapi.controller.mappers.LivroMapper;
-import io.github.cursodsousa.libraryapi.exceptions.RegistroDuplicadoExceptions;
 import io.github.cursodsousa.libraryapi.model.GeneroLivro;
 import io.github.cursodsousa.libraryapi.model.Livro;
 import io.github.cursodsousa.libraryapi.service.LivroService;
@@ -15,9 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("livros")

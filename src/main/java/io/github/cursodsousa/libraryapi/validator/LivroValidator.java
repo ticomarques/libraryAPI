@@ -2,7 +2,7 @@ package io.github.cursodsousa.libraryapi.validator;
 
 
 import io.github.cursodsousa.libraryapi.exceptions.CampoInvalidoException;
-import io.github.cursodsousa.libraryapi.exceptions.RegistroDuplicadoExceptions;
+import io.github.cursodsousa.libraryapi.exceptions.RegistroDuplicadoException;
 import io.github.cursodsousa.libraryapi.model.Livro;
 import io.github.cursodsousa.libraryapi.repository.LivroRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class LivroValidator {
 
     public void validar(Livro livro){
         if(existeLivroComIsbn(livro)){
-            throw new RegistroDuplicadoExceptions("ISBN já cadastrado!");
+            throw new RegistroDuplicadoException("ISBN já cadastrado!");
         }
 
         if(isPrecoObrigatorioNulo(livro)){

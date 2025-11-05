@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name="autor")
+@Table(name="autor", schema = "public")
 @Getter
 @Setter
-@ToString(exclude="livros")
+@ToString(exclude = {"livros"})
 @EntityListeners(AuditingEntityListener.class)
 public class Autor {
 
@@ -29,7 +29,7 @@ public class Autor {
     @Column(name="nome", length = 100, nullable = false)
     private String nome;
 
-    @Column(name="dataNascimento", nullable = false)
+    @Column(name="data_nascimento", nullable = false)
     private LocalDate dataNascimento;
 
     @Column(name="nacionalidade", length = 50, nullable = false)
@@ -48,8 +48,9 @@ public class Autor {
     @Column(name="data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
-    @Column(name="id_usuario")
-    private UUID isUsuario;
+    @ManyToOne
+    @JoinColumn(name="id_usuario")
+    private Usuario usuario;
 
 
 }
