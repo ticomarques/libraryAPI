@@ -7,6 +7,7 @@ import io.github.cursodsousa.libraryapi.service.AutorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -25,6 +26,7 @@ public class AutorController implements GenericController {
 
     //POST autor
     @PostMapping
+    @PreAuthorize("hasRole('GERENTE')")
     //@ResponseStatus(HttpStatus.OK) - Se voce quiser que sempre retorne ok na chamda deste endpoint
     public ResponseEntity<Void> salvar(@RequestBody @Valid AutorDTO dto) {
         //Autor autor = autor.mapearParaAutor(); -- forma sem usar o mapStruct
@@ -51,6 +53,7 @@ public class AutorController implements GenericController {
 
     //DELETE autor
     @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('GERENTE')")
     public ResponseEntity<Void> deletar(@PathVariable("id") String id) {
         var idAutor = UUID.fromString(id);
         Optional<Autor> autorOptional = service.obterPorId(idAutor);
@@ -65,6 +68,7 @@ public class AutorController implements GenericController {
 
     //GET autor (nome, nacionalidade, todos)
     @GetMapping
+    @PreAuthorize("hasAnyRole('OPERADOR', 'GERENTE')")
     public ResponseEntity<List<AutorDTO>> pesquisar(
             @RequestParam(value = "nome", required = false) String nome,
             @RequestParam(value = "nacionalidade", required = false) String nacionalidade
@@ -79,6 +83,7 @@ public class AutorController implements GenericController {
 
     //PUT autor
     @PutMapping("{id}")
+    @PreAuthorize("hasRole('GERENTE')")
     public ResponseEntity<Void> atualizar(@PathVariable("id") String id, @RequestBody @Valid AutorDTO dto) {
         var idAutor = UUID.fromString(id);
         Optional<Autor> autorOptional = service.obterPorId(idAutor);
