@@ -36,6 +36,7 @@ public class AutorService {
         if(autor.getId() == null){
             throw new IllegalArgumentException("Para atualizar, é necessário que o autor já esteja salvo na base.");
         }
+
         validator.validar(autor);
         repository.save(autor);
     }

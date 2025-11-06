@@ -12,7 +12,7 @@ public class AutorValidator {
 
     private AutorRepository repository;
 
-    public AutorValidator(AutorRepository repository) {
+    public AutorValidator(AutorRepository repository){
         this.repository = repository;
     }
 
@@ -28,9 +28,9 @@ public class AutorValidator {
         );
 
         if(autor.getId() == null){
-            return autorEncontrado.isPresent() ;
+            return autorEncontrado.isPresent();
         }
 
-        return !autor.getId().equals(autorEncontrado.get().getId()) && autorEncontrado.isPresent();
+        return autorEncontrado.isPresent();
     }
 }

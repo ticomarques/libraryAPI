@@ -9,16 +9,15 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public record AutorDTO(
-                    UUID id, //vai ser ignorado, por nao estar no contrato
-                    @NotBlank(message="Campo obrigatório")
-                    @Size(min = 2, max = 100, message = "Limite de caracteres para campo atingido.")
-                    String nome,
-                    @NotNull(message="Campo obrigatório")
-                    LocalDate dataNascimento,
-                    @Past(message = "Data deve ser inferior a presente")
-                    @NotBlank(message="Campo obrigatório")
-                    @Size(max = 50, min = 2, message = "Quantidade de caracteres fora do padrão.")
-                    String nacionalidade
-    ) {
-
+        UUID id,
+        @NotBlank(message = "campo obrigatorio")
+        @Size(min = 2, max = 100, message = "campo fora do tamanho padrao")
+        String nome,
+        @NotNull(message = "campo obrigatorio")
+        @Past(message = "nao pode ser uma data futura")
+        LocalDate dataNascimento,
+        @NotBlank(message = "campo obrigatorio")
+        @Size(max = 50, min = 2, message = "campo fora do tamanho padrao")
+        String nacionalidade
+) {
 }

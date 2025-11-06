@@ -17,14 +17,13 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/autores")
+@RequestMapping("autores")
 @RequiredArgsConstructor
 public class AutorController implements GenericController {
 
     private final AutorService service;
     private final AutorMapper mapper;
 
-    //POST autor
     @PostMapping
     @PreAuthorize("hasRole('GERENTE')")
     public ResponseEntity<Void> salvar(@RequestBody @Valid AutorDTO dto) {
@@ -34,7 +33,6 @@ public class AutorController implements GenericController {
         return ResponseEntity.created(location).build();
     }
 
-    //GET autor (detalhes)
     @GetMapping("{id}")
     @PreAuthorize("hasAnyRole('OPERADOR', 'GERENTE')")
     public ResponseEntity<AutorDTO> obterDetalhes(@PathVariable("id") String id) {
@@ -48,7 +46,7 @@ public class AutorController implements GenericController {
                 }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    //DELETE autor
+    // indempontente
     @DeleteMapping("{id}")
     @PreAuthorize("hasRole('GERENTE')")
     public ResponseEntity<Void> deletar(@PathVariable("id") String id) {
@@ -60,10 +58,10 @@ public class AutorController implements GenericController {
         }
 
         service.deletar(autorOptional.get());
+
         return ResponseEntity.noContent().build();
     }
 
-    //GET autor (nome, nacionalidade, todos)
     @GetMapping
     @PreAuthorize("hasAnyRole('OPERADOR', 'GERENTE')")
     public ResponseEntity<List<AutorDTO>> pesquisar(
@@ -78,11 +76,9 @@ public class AutorController implements GenericController {
         return ResponseEntity.ok(lista);
     }
 
-    //PUT autor
     @PutMapping("{id}")
     @PreAuthorize("hasRole('GERENTE')")
-    public ResponseEntity<Void> atualizar(
-            @PathVariable("id") String id, @RequestBody @Valid AutorDTO dto) {
+    public ResponseEntity<Void> atualizar(@PathVariable("id") String id, @RequestBody @Valid AutorDTO dto) {
 
         var idAutor = UUID.fromString(id);
         Optional<Autor> autorOptional = service.obterPorId(idAutor);
