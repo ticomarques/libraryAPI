@@ -1,13 +1,16 @@
 spring:
   application:
     name : libraryapi
+#  profiles:
+#    active: production
+# SPRING_PROFILES_ACTIVE=production
   output:
     ansi:
       enabled: always
   datasource:
-    url: jdbc:postgresql://localhost:5432/library
-    username: user-name
-    password: strong-password
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/library}
+    username: ${DATASOURCE_USERNAME:user-name}
+    password: ${DATASOURCE_PASSWORD:strong-password}
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
@@ -51,3 +54,30 @@ management:
 
 springdoc:
   override-with-generic-response: false
+
+
+# Producao - Production
+---
+
+spring:
+  config:
+    activate:
+      on-profile: production
+
+  jpa:
+    show-sql: false
+
+
+
+# Homologacao
+---
+
+spring:
+  config:
+    activate:
+      on-profile: homologacao
+
+  jpa:
+    show-sql: false
+  datasource:
+    url: jdbc:postgresql://localhost:5432/library

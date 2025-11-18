@@ -11,6 +11,23 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - local_pgdata:/var/lib/postgresql/data
+    networks:
+      - production-network
+
+  db_prod:
+    image: postgres
+    container_name: local_pgdb_prod
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - prod_pgdata:/var/lib/postgresql/data
+    networks:
+      - production-network
+
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin4_container
@@ -22,7 +39,14 @@ services:
       PGADMIN_DEFAULT_PASSWORD: strong-password
     volumes:
       - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - production-network
 
 volumes:
   local_pgdata:
+  prod_pgdata:
   pgadmin-data:
+
+networks:
+  production-network:
+    driver: bridge
