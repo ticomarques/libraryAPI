@@ -3,57 +3,58 @@ Comando para checar porta
 netstat -aof | findstr 5432
 
 
-//SQL
-CREATE TABLE IF NOT EXISTS autor(
-	id UUID not null primary key,
-	nome varchar(100) not null,
-	data_nascimento date not null,
-	nacionalidade varchar(50) not null,
-    data_cadastro timestamp,
-    data_atualizacao timestamp,
-    id_usuario uuid
-
-);
-
-SELECT * FROM autor;
-
-CREATE TABLE IF NOT EXISTS livro (
-	id UUID not null primary key,
-	isbn varchar(20) not null unique,
-	titulo varchar(250) not null,
-	data_publicacao date not null,
-	genero varchar(30) not null,
-	preco numeric(18, 2),
-	data_cadastro timestamp,
-    data_atualizacao timestamp,
-    id_usuario uuid,
-	id_autor UUID not null references autor(id),
-	constraint chk_genero check (genero in ('FICCAO', 'FANTASIA', 'MISTERIO', 'ROMANCE', 'BIOGARFIA', 'CIENCIA'))
-);
-
-SELECT * FROM livro;
-
-SELECT 1;
-
-DROP TABLE livro;
-DROP TABLE autor;
 
 
 
+/* *******************************************************************************************************
+------ TABELA AUTOR --------------------------------------------------------------------------------------
+
+    CREATE TABLE IF NOT EXISTS autor(
+        id UUID not null primary key,
+        nome varchar(100) not null,
+        data_nascimento date not null,
+        nacionalidade varchar(50) not null,
+        data_cadastro timestamp,
+        data_atualizacao timestamp,
+        id_usuario uuid
+
+    );
+
+*/
 
 
-
-
-
-select l.id, l.titulo as nome_livro, l.data_publicacao as data_publicacao,
-a.nome as nome_autor, a.id as id_autor
-from livro as l
-join autor as a on a.id = l.id_autor;
-
+drop table autor;
 
 select * from autor;
 
-select * from livro;
+
+
+
+
+
+/* *******************************************************************************************************
+-------- TABELA LIVRO --------------------------------------------------------------------------------------
+
+    CREATE TABLE IF NOT EXISTS livro (
+        id UUID not null primary key,
+        isbn varchar(20) not null unique,
+        titulo varchar(250) not null,
+        data_publicacao date not null,
+        genero varchar(30) not null,
+        preco numeric(18, 2),
+        data_cadastro timestamp,
+        data_atualizacao timestamp,
+        id_usuario uuid,
+        id_autor UUID not null references autor(id),
+        constraint chk_genero check (genero in ('FICCAO', 'FANTASIA', 'MISTERIO', 'ROMANCE', 'BIOGARFIA', 'CIENCIA'))
+    );
+
+*/
+
+select l.id, l.titulo as nome_livro, l.genero as genero, l.data_publicacao as data_publicacao,
+a.nome as nome_autor, a.id as id_autor
+from livro as l
+join autor as a on a.id = l.id_autor;
 
 select * from livro where titulo like '%UFO%'
 
@@ -61,4 +62,114 @@ select l.* from livro as l order by l.titulo, l.preco asc
 
 delete from livro where id in ('c613c504-ce7c-4a98-909f-1a956d3374fb' , '0e6375ae-ae0b-410b-98b9-ee1287b74eb3')
 
-select * from livro where id = ""
+select * from livro where id = ''
+
+select * from livro where isbn = '99909-99809'
+
+-- drop table livro
+
+select extract (year from data_publicacao) from livro;
+
+select year (data_publicacao) from livro;
+
+select to_char(data_publicacao, 'YYYY') from livro;
+
+select l.*
+from livro as l
+join autor as a on a.id = l.id_autor
+where upper(a.nome) like upper('%pe%')
+
+select * from livro;
+
+
+
+
+
+
+/* *******************************************************************************************************
+------ TABELA USUARIO ------------------------------------------------------------------------------------
+
+    CREATE TABLE usuario(
+            id uuid not null primary key,
+            login varchar(20) not null unique,
+            senha varchar(60) not null,
+            email varchar(150) not null,
+            roles varchar[]
+    )
+
+*/
+
+drop table usuario
+
+SELECT * FROM usuario
+
+
+
+
+
+/* *******************************************************************************************************
+------ TABELA CLIENT ------------------------------------------------------------------------------------
+
+    CREATE TABLE client(
+        id uuid not null primary key,
+        client_id varchar(150) not null,
+        client_secret varchar(150) not null,
+        redirect_uI varchar(150) not null,
+
+    )
+
+*/
+
+SELECT * FROM client
+
+DROP TABLE client
+
+
+
+
+
+
+
+/* *******************************************************************************************************
+------ POPULAR TABELA usuario e client -------------------------------------------------------------------
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+INSERT INTO usuario
+(id, login, senha, email, roles)
+VALUES
+(uuid_generate_v4(), 'admin', '$2a$12$d6t9rkO.kKNT.zPKZruZRe5gDdqqciJgZDcsSL44Cj0HMimnBzN8K', 'admin@admin.com','{GERENTE}')
+
+SELECT * FROM usuario
+
+
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+INSERT INTO client
+(id, client_id, client_secret, redirect_uri, scope)
+VALUES
+(uuid_generate_v4(), 'client-production', '$2a$12$0TBnbt2EgxXbZAKj4pb4u.osXnKCL5TOssMYJtSUfRv.A7cu2XGRa', 'http://localhost:8080/authorized', 'GERENTE')
+
+SELECT * FROM client
+
+*/
+
+
+
+
+
+
+
+/* *******************************************************************************************************
+------ COMANDOS DOCKER ------------------------------------------------------------------------------------
+
+
+Comando docker para rodar a imagem direto do docker repository
+> docker run --name libraryapi-production-dockerfile -e DATASOURCE_URL=jdbc:postgresql://local_pgdb_prod:5432/library -e DATASOURCE_USERNAME=postgres -e DATASOURCE_PASSWORD=postgres --network resources_production-network -d -p 8080:8080 -p 9090:9090 titicomarques/libraryapi
+
+
+Comando para rodar docker compose
+> docker compose up -d
+
+Parar docker compose parar
+> docker compose stop
+
